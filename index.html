@@ -110,6 +110,63 @@
             animation:fadeIn .8s 1.2s both;z-index:2;
         }
 
+        /* Closing slide */
+        .slide.closing{
+            background:linear-gradient(135deg,#0c1a30 0%,#1f3a5f 50%,#15263f 100%);
+            color:#fff;justify-content:center;align-items:center;text-align:center;
+            position:absolute;
+        }
+        .slide.closing .bg-pattern{
+            position:absolute;inset:0;opacity:.06;
+            background-image:repeating-linear-gradient(-45deg,transparent,transparent 80px,rgba(201,169,110,.5) 80px,rgba(201,169,110,.5) 81px);
+            animation:bgpan 40s linear infinite reverse;
+        }
+        .slide.closing .glow1{
+            position:absolute;width:60%;height:70%;top:-15%;right:-15%;
+            background:radial-gradient(circle,rgba(201,169,110,.15),transparent 65%);
+            filter:blur(50px);animation:float2 14s ease-in-out infinite alternate;
+        }
+        .slide.closing .glow2{
+            position:absolute;width:50%;height:60%;bottom:-15%;left:-10%;
+            background:radial-gradient(circle,rgba(58,110,165,.3),transparent 65%);
+            filter:blur(45px);animation:float1 11s ease-in-out infinite alternate;
+        }
+        .closing-eyebrow{
+            font-family:'JetBrains Mono',monospace;font-size:.8vw;letter-spacing:.35em;
+            text-transform:uppercase;color:var(--gold-bright);
+            animation:fadeIn .8s .2s both;margin-bottom:3vh;
+            display:flex;align-items:center;gap:1vw;z-index:2;
+        }
+        .closing-eyebrow::before,.closing-eyebrow::after{
+            content:"";width:4vw;height:1px;background:linear-gradient(90deg,transparent,var(--gold-bright),transparent);
+        }
+        .slide.closing h1{
+            font-family:'Playfair Display',serif;font-size:4.5vw;line-height:1.15;font-weight:800;
+            animation:fadeUp 1s .35s both;
+            text-shadow:0 4px 40px rgba(0,0,0,.5);z-index:2;letter-spacing:-.01em;
+        }
+        .slide.closing .ribbon{
+            margin:4vh auto 0;height:3px;
+            background:linear-gradient(90deg,transparent,var(--gold),transparent);
+            animation:ribbonGrow 1s .6s both;z-index:2;
+        }
+        .slide.closing .closing-sub{
+            margin-top:3.5vh;font-size:1.3vw;color:#d0dae8;letter-spacing:.05em;font-weight:300;
+            animation:fadeUp .8s .8s both;z-index:2;max-width:60%;line-height:1.5;
+        }
+        .slide.closing .questions{
+            margin-top:4vh;font-family:'JetBrains Mono',monospace;font-size:.9vw;
+            color:var(--gold-bright);letter-spacing:.2em;text-transform:uppercase;
+            animation:fadeIn .8s 1.1s both;z-index:2;
+            padding:.8vh 2vw;border:1px solid rgba(201,169,110,.3);border-radius:30px;
+        }
+        .slide.closing .footer-row{
+            position:absolute;bottom:5vh;left:0;right:0;
+            display:flex;justify-content:space-between;padding:0 5vw;
+            font-size:.8vw;color:#7a93b0;letter-spacing:.1em;
+            animation:fadeIn .8s 1.4s both;z-index:2;
+        }
+
         .content-header{
             display:flex;align-items:center;gap:1.5vw;
             padding:3.2vh 4vw 2.5vh;
@@ -211,8 +268,8 @@
         .img-row-portrait{
             display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2vw;
             margin:0 auto 2vh auto;
-            height:50vh;
-            width:calc(79% - 40px);
+            height:40vh;
+            width:calc(79% - 300px);
         }
 
         .side-img-layout{display:flex;gap:2.5vw;width:100%;height:100%;align-items:center}
@@ -252,7 +309,7 @@
 
 <div class="controls">
     <button id="prev" title="Назад">‹</button>
-    <span class="counter" id="counter">1 / 12</span>
+    <span class="counter" id="counter">1 / 13</span>
     <button id="next" title="Вперёд">›</button>
     <button class="fs" id="fs">⛶ Полный экран</button>
 </div>
@@ -384,6 +441,11 @@
                 { text: 'Гражданский кодекс Российской Федерации.' },
                 { text: 'Постановление Пленума ВС РФ № 10 от 24.02.2005 «О защите чести и достоинства».' }
             ]
+        },
+        { type: 'closing',
+            title: 'Спасибо за внимание',
+            subtitle: 'Достоинство работника — это не привилегия, а право, которое должно защищаться каждый день.',
+            questions: 'Готов ответить на вопросы'
         }
     ];
 
@@ -397,7 +459,7 @@
         deck.innerHTML = '';
         slides.forEach((s,i)=>{
             const el = document.createElement('section');
-            el.className = 'slide' + (s.type==='title'?' title':' content');
+            el.className = 'slide' + (s.type==='title'?' title':s.type==='closing'?' closing':' content');
             el.dataset.index = i;
 
             let html = '';
@@ -410,6 +472,20 @@
         <h1>${s.title}</h1>
         <div class="ribbon"></div>
         <div class="subtitle">${s.subtitle}</div>
+        <div class="footer-row">
+          <span>Трудовое право • 2026</span>
+          <span>${i+1} / ${slides.length}</span>
+        </div>`;
+            } else if(s.type === 'closing'){
+                html = `
+        <div class="bg-pattern"></div>
+        <div class="glow1"></div>
+        <div class="glow2"></div>
+        <div class="closing-eyebrow">Завершение</div>
+        <h1>${s.title}</h1>
+        <div class="ribbon"></div>
+        <div class="closing-sub">${s.subtitle}</div>
+        <div class="questions">${s.questions}</div>
         <div class="footer-row">
           <span>Трудовое право • 2026</span>
           <span>${i+1} / ${slides.length}</span>
