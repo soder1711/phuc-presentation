@@ -3,269 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Обеспечение права работников на защиту своего достоинства</title>
+    <title>Защита достоинства работников</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root{
             --navy:#1f3a5f;
             --navy-deep:#15263f;
-            --light:#f4f6f8;
+            --gold:#c9a96e;
+            --gold-bright:#e0c388;
+            --paper:#fafbfc;
             --gray:#3c3c3c;
+            --gray-soft:#6b7280;
             --accent:#3a6ea5;
             --accent-soft:#dce7f2;
+            --red:#c25450;
+            --green:#5a8a6b;
         }
         *{margin:0;padding:0;box-sizing:border-box}
+        html,body{height:100%}
         body{
-            font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;
-            background:#0b1421;
+            font-family:'Manrope',system-ui,sans-serif;
+            background:#080d16;
             color:#1c1c1c;
             overflow:hidden;
-            height:100vh;
+            height:100vh;width:100vw;
         }
         .deck{
             width:100vw;height:100vh;position:relative;
             display:flex;align-items:center;justify-content:center;
         }
-        .deck::before{
-            content:"";position:absolute;inset:0;z-index:-1;
-            background:
-                    radial-gradient(circle at 20% 30%, rgba(58,110,165,.15) 0, transparent 50%),
-                    radial-gradient(circle at 80% 70%, rgba(31,58,95,.18) 0, transparent 50%);
-            animation:bgshift 12s ease-in-out infinite alternate;
-        }
-        @keyframes bgshift{
-            0%{transform:scale(1) rotate(0deg);opacity:.7}
-            100%{transform:scale(1.15) rotate(3deg);opacity:1}
-        }
-
         .slide{
-            width:min(100vw,178vh);
+            width:min(100vw,177.78vh);
             aspect-ratio:16/9;
-            background:var(--light);
-            position:relative;
-            box-shadow:0 30px 80px rgba(0,0,0,.5);
+            background:var(--paper);
+            position:absolute;
+            box-shadow:0 40px 100px rgba(0,0,0,.55);
             overflow:hidden;
             display:none;
             flex-direction:column;
+            border-radius:8px;
         }
-        .slide.active{
-            display:flex;
-            animation:slideIn .6s cubic-bezier(.25,.46,.45,.94);
-        }
-        .slide.exit-left{animation:slideOutLeft .4s ease-in forwards}
-        .slide.exit-right{animation:slideOutRight .4s ease-in forwards}
+        .slide.active{display:flex;animation:slideIn .65s cubic-bezier(.22,.61,.36,1)}
+        .slide.exit-left{animation:exitL .4s ease-in forwards}
+        .slide.exit-right{animation:exitR .4s ease-in forwards}
+        @keyframes slideIn{0%{opacity:0;transform:translateX(70px) scale(.95)}100%{opacity:1;transform:translateX(0) scale(1)}}
+        @keyframes exitL{0%{opacity:1}100%{opacity:0;transform:translateX(-70px) scale(.95)}}
+        @keyframes exitR{0%{opacity:1}100%{opacity:0;transform:translateX(70px) scale(.95)}}
+        @keyframes fadeUp{0%{opacity:0;transform:translateY(28px)}100%{opacity:1;transform:translateY(0)}}
+        @keyframes fadeIn{0%{opacity:0}100%{opacity:1}}
+        @keyframes slideRight{0%{opacity:0;transform:translateX(-40px)}100%{opacity:1;transform:translateX(0)}}
+        @keyframes growW{0%{transform:scaleX(0)}100%{transform:scaleX(1)}}
+        @keyframes float1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,30px) scale(1.2)}}
+        @keyframes float2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-30px,-20px) scale(1.15)}}
+        @keyframes bgpan{0%{background-position:0 0}100%{background-position:600px 600px}}
+        @keyframes ribbonGrow{0%{width:0;opacity:0}100%{width:18vw;opacity:1}}
 
-        @keyframes slideIn{
-            0%{opacity:0;transform:translateX(60px) scale(.96)}
-            100%{opacity:1;transform:translateX(0) scale(1)}
-        }
-        @keyframes slideOutLeft{
-            0%{opacity:1;transform:translateX(0)}
-            100%{opacity:0;transform:translateX(-60px) scale(.96)}
-        }
-        @keyframes slideOutRight{
-            0%{opacity:1;transform:translateX(0)}
-            100%{opacity:0;transform:translateX(60px) scale(.96)}
-        }
-
+        /* Title Slide */
         .slide.title{
-            background:linear-gradient(135deg,var(--navy-deep),var(--navy) 60%,#274d7a);
-            color:#fff;justify-content:center;align-items:center;text-align:center;padding:0 6vw;
+            background:linear-gradient(135deg,#0c1a30 0%,#1f3a5f 55%,#2a5080 100%);
+            color:#fff;justify-content:center;align-items:center;text-align:center;
         }
-        .slide.title::after{
-            content:"";position:absolute;inset:0;
-            background:
-                    radial-gradient(circle at 30% 20%, rgba(255,255,255,.06) 0, transparent 40%),
-                    radial-gradient(circle at 70% 80%, rgba(255,255,255,.04) 0, transparent 40%);
-            animation:shimmer 8s ease-in-out infinite alternate;
-            pointer-events:none;
+        .slide.title .bg-pattern{
+            position:absolute;inset:0;opacity:.08;
+            background-image:repeating-linear-gradient(45deg,transparent,transparent 60px,rgba(201,169,110,.5) 60px,rgba(201,169,110,.5) 61px);
+            animation:bgpan 30s linear infinite;
         }
-        @keyframes shimmer{
-            0%{opacity:.5;transform:translateY(0)}
-            100%{opacity:1;transform:translateY(-20px)}
+        .slide.title .glow1{
+            position:absolute;width:50%;height:60%;top:-10%;left:-10%;
+            background:radial-gradient(circle,rgba(58,110,165,.4),transparent 70%);
+            filter:blur(40px);animation:float1 10s ease-in-out infinite alternate;
+        }
+        .slide.title .glow2{
+            position:absolute;width:45%;height:55%;bottom:-10%;right:-10%;
+            background:radial-gradient(circle,rgba(201,169,110,.2),transparent 70%);
+            filter:blur(50px);animation:float2 12s ease-in-out infinite alternate;
+        }
+        .title-eyebrow{
+            font-family:'JetBrains Mono',monospace;font-size:.85vw;letter-spacing:.3em;
+            text-transform:uppercase;color:var(--gold);
+            animation:fadeIn .8s .2s both;
+            margin-bottom:2.5vh;
+            display:flex;align-items:center;gap:1vw;z-index:2;
+        }
+        .title-eyebrow::before,.title-eyebrow::after{
+            content:"";width:3vw;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);
         }
         .slide.title h1{
-            font-size:3vw;line-height:1.3;font-weight:700;max-width:80%;
-            animation:fadeUp .8s .3s both;
-        }
-        .slide.title .subtitle{
-            margin-top:2.5vh;font-size:1.3vw;color:#dcdcdc;letter-spacing:.05em;
-            animation:fadeUp .8s .6s both;
+            font-family:'Playfair Display',serif;font-size:2.6vw;line-height:1.25;font-weight:800;
+            max-width:75%;animation:fadeUp 1s .35s both;
+            text-shadow:0 4px 30px rgba(0,0,0,.4);z-index:2;
         }
         .slide.title .ribbon{
-            margin-top:5vh;width:0;height:5px;background:rgba(255,255,255,.6);border-radius:3px;
-            animation:ribbonGrow .8s .5s both;
+            margin:3.5vh auto 0;height:3px;
+            background:linear-gradient(90deg,transparent,var(--gold),transparent);
+            animation:ribbonGrow 1s .6s both;z-index:2;
         }
-        @keyframes ribbonGrow{
-            0%{width:0;opacity:0}
-            100%{width:12vw;opacity:1}
+        .slide.title .subtitle{
+            margin-top:3vh;font-size:1.1vw;color:#b8c6d8;letter-spacing:.08em;font-weight:300;
+            animation:fadeUp .8s .8s both;z-index:2;
         }
-        .slide.title .topic{
-            position:absolute;top:4vh;left:4vw;font-size:1vw;color:#a9c3e0;
-            letter-spacing:.15em;text-transform:uppercase;
-            animation:fadeIn .6s .1s both;
-        }
-        .slide.title .pageno{
-            position:absolute;bottom:3vh;right:4vw;font-size:.9vw;color:#8fb0d8;
-            animation:fadeIn .6s .8s both;
+        .slide.title .footer-row{
+            position:absolute;bottom:5vh;left:0;right:0;
+            display:flex;justify-content:space-between;padding:0 5vw;
+            font-size:.8vw;color:#7a93b0;letter-spacing:.1em;
+            animation:fadeIn .8s 1.2s both;z-index:2;
         }
 
-        @keyframes fadeUp{
-            0%{opacity:0;transform:translateY(30px)}
-            100%{opacity:1;transform:translateY(0)}
+        /* Content Slides */
+        .content-header{
+            display:flex;align-items:center;gap:1.5vw;
+            padding:3.2vh 4vw 2.5vh;
+            border-bottom:1px solid #e2e8f0;
+            position:relative;z-index:2;
         }
-        @keyframes fadeIn{
-            0%{opacity:0}
-            100%{opacity:1}
+        .slide-num{
+            font-family:'Playfair Display',serif;font-size:2.4vw;font-weight:800;
+            color:var(--navy);line-height:1;animation:fadeUp .5s .1s both;position:relative;
         }
-
-        .slide.content{background:#fff}
-        .header{
-            height:8%;background:linear-gradient(90deg,var(--navy),var(--accent));
-            color:#fff;display:flex;align-items:center;padding:0 3vw;
-            animation:slideDown .5s both;
-            position:relative;overflow:hidden;
+        .slide-num::after{
+            content:"";position:absolute;left:0;bottom:-4px;width:100%;height:3px;
+            background:var(--gold);transform-origin:left;animation:growW .5s .3s both;
         }
-        .header::after{
-            content:"";position:absolute;top:0;left:-100%;width:50%;height:100%;
-            background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
-            animation:sweep 4s 1s infinite;
+        .content-header h2{
+            font-family:'Playfair Display',serif;font-size:1.75vw;font-weight:700;
+            color:var(--navy-deep);letter-spacing:-.01em;line-height:1.2;
+            animation:fadeUp .5s .25s both;
         }
-        @keyframes sweep{
-            0%{left:-100%}
-            50%{left:200%}
-            100%{left:200%}
-        }
-        @keyframes slideDown{
-            0%{transform:translateY(-100%);opacity:0}
-            100%{transform:translateY(0);opacity:1}
-        }
-        .header h2{
-            font-size:1.8vw;font-weight:700;letter-spacing:.01em;
-            animation:fadeUp .5s .2s both;
-        }
-        .header .num{
-            margin-left:auto;font-size:1.1vw;color:#cfe0f0;
-            background:rgba(255,255,255,.12);padding:.4vw 1vw;border-radius:20px;
+        .content-header .tag{
+            margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.7vw;
+            color:var(--gray-soft);letter-spacing:.15em;text-transform:uppercase;
+            background:#f4f6f8;padding:.5vh 1vw;border-radius:20px;border:1px solid #e2e8f0;
             animation:fadeIn .5s .4s both;
         }
+        .content-body{flex:1;padding:3vh 4vw 5vh;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2;}
 
-        .body{
-            flex:1;padding:4vh 4vw;display:flex;flex-direction:column;justify-content:center;
-            background:
-                    radial-gradient(circle at 95% 8%, var(--accent-soft) 0, transparent 38%),
-                    #fff;
-        }
-        .body ul{list-style:none;display:flex;flex-direction:column;gap:1.6vh}
-        .body li{
-            font-size:1.15vw;line-height:1.5;color:var(--gray);
-            padding-left:2.3vw;position:relative;max-width:92%;
-            opacity:0;
-            animation:bulletIn .5s both;
-        }
-        .slide.active .body li{
-            animation:bulletIn .5s both;
-        }
-        .slide.active .body li:nth-child(1){animation-delay:.3s}
-        .slide.active .body li:nth-child(2){animation-delay:.42s}
-        .slide.active .body li:nth-child(3){animation-delay:.54s}
-        .slide.active .body li:nth-child(4){animation-delay:.66s}
-        .slide.active .body li:nth-child(5){animation-delay:.78s}
-        .slide.active .body li:nth-child(6){animation-delay:.9s}
-        .slide.active .body li:nth-child(7){animation-delay:1.02s}
-        .slide.active .body li:nth-child(8){animation-delay:1.14s}
+        /* Backgrounds */
+        .bg-layer{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+        .bg-s2{background:radial-gradient(circle at 88% 15%, rgba(58,110,165,.08), transparent 35%),radial-gradient(circle at 5% 85%, rgba(201,169,110,.06), transparent 30%)}
+        .bg-s3{background:linear-gradient(180deg, rgba(58,110,165,.04), transparent 40%),radial-gradient(circle at 92% 80%, rgba(61,139,139,.06), transparent 35%)}
+        .bg-s4{background:radial-gradient(circle at 10% 20%, rgba(201,169,110,.07), transparent 30%),radial-gradient(circle at 90% 60%, rgba(31,58,95,.06), transparent 35%)}
+        .bg-s5{background:radial-gradient(circle at 50% 50%, rgba(58,110,165,.05), transparent 60%)}
+        .bg-s6{background:linear-gradient(135deg, rgba(201,169,110,.04) 0%, transparent 50%),radial-gradient(circle at 85% 90%, rgba(90,138,107,.06), transparent 35%)}
+        .bg-s7{background:radial-gradient(circle at 15% 75%, rgba(194,84,80,.06), transparent 35%),radial-gradient(circle at 80% 20%, rgba(31,58,95,.05), transparent 30%)}
+        .bg-s8{background:linear-gradient(180deg, rgba(90,138,107,.04), transparent 50%),radial-gradient(circle at 70% 30%, rgba(58,110,165,.06), transparent 35%)}
+        .bg-s9{background:radial-gradient(circle at 20% 30%, rgba(201,169,110,.07), transparent 35%),radial-gradient(circle at 80% 70%, rgba(58,110,165,.05), transparent 30%)}
+        .bg-s10{background:radial-gradient(circle at 90% 10%, rgba(31,58,95,.08), transparent 30%),linear-gradient(180deg, rgba(58,110,165,.03), transparent 40%)}
+        .bg-s11{background:radial-gradient(circle at 10% 90%, rgba(194,84,80,.06), transparent 35%),radial-gradient(circle at 60% 20%, rgba(201,169,110,.05), transparent 30%)}
+        .bg-s12{background:linear-gradient(135deg, rgba(90,138,107,.05) 0%, transparent 50%),radial-gradient(circle at 85% 85%, rgba(201,169,110,.06), transparent 35%)}
+        .bg-s13{background:radial-gradient(circle at 50% 0%, rgba(58,110,165,.06), transparent 40%)}
+        .bg-s14{background:radial-gradient(circle at 15% 85%, rgba(201,169,110,.08), transparent 35%)}
 
-        @keyframes bulletIn{
-            0%{opacity:0;transform:translateX(-30px)}
-            100%{opacity:1;transform:translateX(0)}
-        }
+        /* Cards */
+        .card-grid{display:grid;gap:1.8vh 1.6vw;width:100%}
+        .card-grid.cols-2{grid-template-columns:1fr 1fr}
+        .card-grid.cols-3{grid-template-columns:1fr 1fr 1fr}
+        .card-grid.cols-4{grid-template-columns:1fr 1fr 1fr 1fr}
 
-        .body li::before{
-            content:"";position:absolute;left:0;top:.55em;
-            width:1vw;height:1vw;border-radius:50%;
-            background:linear-gradient(135deg,var(--navy),var(--accent));
-            box-shadow:0 0 0 4px var(--accent-soft);
-            animation:pop .4s both;
+        .card{
+            background:#fff;border:1px solid #e2e8f0;border-radius:10px;
+            padding:2vh 1.5vw;position:relative;overflow:hidden;
+            opacity:0;animation:fadeUp .5s both;
+            transition:transform .25s,box-shadow .25s,border-color .25s;
         }
-        .slide.active .body li:nth-child(1)::before{animation-delay:.35s}
-        .slide.active .body li:nth-child(2)::before{animation-delay:.47s}
-        .slide.active .body li:nth-child(3)::before{animation-delay:.59s}
-        .slide.active .body li:nth-child(4)::before{animation-delay:.71s}
-        .slide.active .body li:nth-child(5)::before{animation-delay:.83s}
-        .slide.active .body li:nth-child(6)::before{animation-delay:.95s}
-        .slide.active .body li:nth-child(7)::before{animation-delay:1.07s}
-        .slide.active .body li:nth-child(8)::before{animation-delay:1.19s}
+        .card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(31,58,95,.12);border-color:var(--accent)}
+        .card::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,var(--navy),var(--accent));opacity:0;transition:opacity .25s}
+        .card:hover::before{opacity:1}
+        .card .card-icon{font-family:'JetBrains Mono',monospace;font-size:.7vw;font-weight:500;color:var(--gold);letter-spacing:.1em;margin-bottom:.8vh}
+        .card .card-title{font-size:1.05vw;font-weight:700;color:var(--navy-deep);line-height:1.3;margin-bottom:.6vh}
+        .card .card-text{font-size:.85vw;line-height:1.55;color:var(--gray);font-weight:400}
+        .card .card-text strong{color:var(--navy);font-weight:600}
 
-        @keyframes pop{
-            0%{transform:scale(0)}
-            60%{transform:scale(1.3)}
-            100%{transform:scale(1)}
+        /* Info List */
+        .info-list{display:flex;flex-direction:column;gap:1.5vh;width:100%}
+        .info-row{
+            display:flex;gap:1.5vw;align-items:flex-start;
+            padding:1.5vh 0;border-bottom:1px solid #eef2f6;
+            opacity:0;animation:slideRight .5s both;
         }
+        .info-row:last-child{border-bottom:none}
+        .info-row .row-num{font-family:'Playfair Display',serif;font-size:1.4vw;font-weight:700;color:var(--gold);line-height:1;min-width:3vw;opacity:.8}
+        .info-row .row-content{font-size:.95vw;line-height:1.5;color:var(--gray);font-weight:400;padding-top:.2vh}
+        .info-row .row-content strong{color:var(--navy);font-weight:700}
 
-        .body li strong{color:var(--navy)}
+        /* Split Layout */
+        .split-layout{display:flex;gap:3vw;width:100%;align-items:stretch;height:100%}
+        .split-left{flex:1.2;display:flex;flex-direction:column;justify-content:center}
+        .split-right{flex:1;display:flex;align-items:center;justify-content:center}
 
-        .progress{
-            position:absolute;bottom:0;left:0;height:5px;background:linear-gradient(90deg,var(--accent),var(--navy));
-            transition:width .6s cubic-bezier(.25,.46,.45,.94);
-            animation:progressGlow 2s ease-in-out infinite alternate;
+        .quote-block{
+            background:linear-gradient(135deg,var(--navy-deep),var(--navy));
+            color:#fff;border-radius:12px;padding:3.5vh 2vw;position:relative;overflow:hidden;
+            animation:fadeUp .6s .3s both;width:100%;
         }
-        @keyframes progressGlow{
-            0%{box-shadow:0 0 4px rgba(58,110,165,.4)}
-            100%{box-shadow:0 0 12px rgba(58,110,165,.8)}
-        }
+        .quote-block::before{content:"“";font-family:'Playfair Display',serif;font-size:8vw;position:absolute;top:-3vh;right:1vw;opacity:.15;color:var(--gold);line-height:1}
+        .quote-block .quote-text{font-family:'Playfair Display',serif;font-size:1.2vw;line-height:1.5;font-weight:600;font-style:italic;max-width:90%;position:relative;z-index:2}
+        .quote-block .quote-source{margin-top:2vh;font-size:.8vw;color:var(--gold-bright);letter-spacing:.05em;text-transform:uppercase}
 
+        .stat-block{text-align:center;padding:3vh 2vw;background:#fff;border:1px solid #e2e8f0;border-radius:12px}
+        .stat-block .stat-num{font-family:'Playfair Display',serif;font-size:3vw;font-weight:800;color:var(--navy);line-height:1}
+        .stat-block .stat-label{font-size:.9vw;color:var(--gray-soft);margin-top:1vh;letter-spacing:.05em;text-transform:uppercase}
+
+        /* Controls */
         .controls{
-            position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
-            display:flex;gap:10px;align-items:center;
-            background:rgba(15,26,41,.85);backdrop-filter:blur(10px);
-            padding:10px 18px;border-radius:40px;color:#fff;z-index:50;
-            font-size:14px;box-shadow:0 8px 30px rgba(0,0,0,.4);
-            animation:controlRise .6s .5s both;
-        }
-        @keyframes controlRise{
-            0%{opacity:0;transform:translateX(-50%) translateY(40px)}
-            100%{opacity:1;transform:translateX(-50%) translateY(0)}
+            position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+            display:flex;gap:12px;align-items:center;
+            background:rgba(8,13,22,.9);backdrop-filter:blur(12px);
+            padding:10px 20px;border-radius:50px;color:#fff;z-index:100;
+            font-size:14px;box-shadow:0 10px 40px rgba(0,0,0,.5);
+            animation:fadeUp .6s .8s both;border:1px solid rgba(255,255,255,.06);
         }
         .controls button{
-            background:rgba(255,255,255,.1);border:none;color:#fff;
-            width:34px;height:34px;border-radius:50%;cursor:pointer;
-            font-size:15px;transition:.2s;display:flex;align-items:center;justify-content:center;
+            background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.06);
+            color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;
+            font-size:16px;transition:.2s;display:flex;align-items:center;justify-content:center;
         }
-        .controls button:hover{
-            background:var(--accent);
-            transform:scale(1.15);
-            box-shadow:0 4px 15px rgba(58,110,165,.5);
-        }
-        .controls button:active{transform:scale(.92)}
-        .controls .counter{
-            min-width:60px;text-align:center;letter-spacing:.05em;
-            transition:opacity .2s;
-        }
-        .controls .fs{
-            width:auto;padding:0 14px;border-radius:18px;font-size:13px;
-        }
-        .controls .fs:hover{letter-spacing:.03em}
+        .controls button:hover{background:var(--accent);transform:scale(1.1)}
+        .controls .counter{min-width:60px;text-align:center;letter-spacing:.05em;font-family:'JetBrains Mono',monospace}
+        .controls .fs{width:auto;padding:0 16px;border-radius:20px;font-size:13px}
 
-        .hint{
-            position:fixed;top:16px;right:20px;color:#7a8aa0;font-size:12px;
-            background:rgba(0,0,0,.4);padding:6px 12px;border-radius:20px;z-index:50;
-            animation:fadeIn .6s 1s both;
-            transition:opacity .5s;
-        }
+        .progress-bar{position:absolute;bottom:0;left:0;height:4px;background:linear-gradient(90deg,var(--navy),var(--gold));transition:width .6s ease;z-index:10}
+        .hint{position:fixed;top:16px;right:20px;color:#7a8aa0;font-size:12px;background:rgba(0,0,0,.4);padding:6px 12px;border-radius:20px;z-index:50;animation:fadeIn .6s 1s both;transition:opacity .5s}
         .hint.hide{opacity:0;pointer-events:none}
 
-        @media (max-aspect-ratio:16/9){
-            .slide{width:100vw;height:auto;aspect-ratio:16/9}
-        }
-
-        @media (prefers-reduced-motion: reduce){
-            *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
-        }
+        @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
     </style>
 </head>
 <body>
 
 <div class="hint">← → / Space · F — полноэкранный режим</div>
-
 <div class="deck" id="deck"></div>
 
 <div class="controls">
@@ -277,81 +244,155 @@
 
 <script>
     const slides = [
-        {type:'title',
-            title:'Обеспечение права работников на защиту своего достоинства в период трудовой деятельности',
-            subtitle:'Трудовое право  •  ФИО, группа, курс',
-            topic:'Трудовое право'},
-        {title:'Актуальность темы', bullets:[
-                'Достоинство личности — конституционная ценность (ст. 21 Конституции РФ)',
-                'Работник — экономически более слабая сторона трудовых отношений',
-                'Моббинг, хамство, унижение — распространённые явления',
-                'ТК РФ прямо закрепляет право на защиту достоинства (ст. 2, 237)',
-                'Тема недостаточно освещена в практике']},
-        {title:'Понятие «достоинство» в праве', bullets:[
-                'Достоинство — самооценка личности, неотчуждаемое нематериальное благо (ст. 150 ГК РФ)',
-                'В трудовом праве — право на уважительное отношение, защиту от унижения',
-                'Соотносится с принципами: равенство, запрет дискриминации, свобода труда']},
-        {title:'Нормативная база', bullets:[
-                'Конституция РФ — ст. 21, ст. 37',
-                'ТК РФ — ст. 2, ст. 3, ст. 192, ст. 237, ст. 379',
-                'ГК РФ — ст. 150–152 (честь, достоинство, деловая репутация)',
-                'Постановление Пленума ВС РФ № 10 от 24.02.2005']},
-        {title:'Место принципа в системе принципов', bullets:[
-                'Принципы трудового права (ст. 2 ТК РФ) — основополагающие начала',
-                'Связан с: запретом принудительного труда, равенством, запретом дискриминации',
-                'Межотраслевой принцип: конституционное + трудовое + гражданское право']},
-        {title:'Содержание принципа', bullets:[
-                'Уважительное отношение со стороны работодателя и коллег',
-                'Защита от оскорблений, клеветы, угроз',
-                'Недопустимость унижающих дисциплинарных мер',
-                'Защита персональных данных и частной жизни',
-                'Право на опровержение недостоверных сведений',
-                'Право на компенсацию морального вреда']},
-        {title:'Формы нарушения достоинства', bullets:[
-                'Моббинг — психологический террор коллектива',
-                'Боссинг — давление со стороны руководителя',
-                'Харассмент — сексуальные домогательства',
-                'Оскорбления, крик, унижение при коллегах',
-                'Необоснованные обвинения, распространение порочащих сведений']},
-        {title:'Способы защиты права', bullets:[
-                'Самозащита (ст. 379 ТК РФ), обращение в профсоюз',
-                'Административные: ГИТ, прокуратура',
-                'Судебные: иск о защите чести и достоинства (ст. 152 ГК РФ)',
-                'Компенсация морального вреда (ст. 237 ТК РФ)',
-                'Уполномоченный по правам человека, медиация, КТС']},
-        {title:'Компенсация морального вреда', bullets:[
-                'Основание — ст. 237 ТК РФ',
-                'Размер определяется судом: характер страданий, вина, обстоятельства',
-                'Требования разумности и справедливости',
-                'Возможна и без имущественного ущерба']},
-        {title:'Судебная практика', bullets:[
-                'Восстановление на работе при унижающем увольнении',
-                'Иски за оскорбления в служебной переписке',
-                'Взыскание морального вреда за незаконные взыскания',
-                'Доказательства: аудио, скриншоты, свидетели, заключения психолога']},
-        {title:'Проблемы реализации', bullets:[
-                'Сложность доказывания психологического давления',
-                'Страх работника потерять место',
-                'Отсутствие в ТК РФ понятий «моббинг», «харассмент»',
-                'Небольшие суммы компенсаций морального вреда',
-                'Латентность нарушений']},
-        {title:'Пути совершенствования', bullets:[
-                'Закрепить в ТК РФ понятия «моббинг», «харассмент»',
-                'Усилить ответственность работодателя',
-                'Развивать медиацию в трудовых спорах',
-                'Обучать руководителей деловой этике',
-                'Внутренние антимоббинговые политики организаций']},
-        {title:'Выводы', bullets:[
-                'Право на защиту достоинства — конституционный и отраслевой принцип',
-                'Закреплено в ст. 2 и 237 ТК РФ',
-                'Защита: самозащита, ГИТ, суд, профсоюз',
-                'Ключевой инструмент — компенсация морального вреда',
-                'Требуется развитие законодательства и практики']},
-        {title:'Список литературы', bullets:[
-                'Конституция РФ; Трудовой кодекс РФ; Гражданский кодекс РФ',
-                'Постановление Пленума ВС РФ № 10 от 24.02.2005',
-                'Комментарий к ТК РФ (под ред. К.Н. Гусова)',
-                'Научные статьи по моббингу, боссингу, защите достоинства']}
+        { type: 'title',
+            title: 'Обеспечение права работников на защиту своего достоинства в период трудовой деятельности',
+            subtitle: 'Трудовое право • ФИО, группа, курс',
+            topic: 'Трудовое право'
+        },
+        {
+            title: 'Актуальность темы', tag: 'Context', bg: 'bg-s2', layout: 'cards', cols: 3,
+            content: [
+                { icon: '01 // CONSTITUTION', title: 'Конституционная ценность', text: 'Достоинство личности — основа правового статуса человека (ст. 21 Конституции РФ). Государство обязано его защищать.' },
+                { icon: '02 // INEQUALITY', title: 'Слабая сторона', text: 'Работник находится в экономической зависимости от работодателя, что требует повышенной защиты его нематериальных благ.' },
+                { icon: '03 // STATISTICS', title: 'Распространённость', text: 'Моббинг, хамство и унижения на рабочих местах — частые явления, требующие правового регулирования.' },
+                { icon: '04 // LAW GAP', title: 'Недостаток практики', text: 'Тема слабо освещена в судебной практике и доктрине, несмотря на наличие базовых норм в ТК РФ.' }
+            ]
+        },
+        {
+            title: 'Понятие «достоинство»', tag: 'Definition', bg: 'bg-s3', layout: 'split',
+            leftContent: `
+      <div class="info-list">
+        <div class="info-row"><div class="row-num">I</div><div class="row-content"><strong>Гражданское право:</strong> Достоинство — это самооценка личности, неотчуждаемое нематериальное благо (ст. 150 ГК РФ).</div></div>
+        <div class="info-row"><div class="row-num">II</div><div class="row-content"><strong>Трудовое право:</strong> Право на уважительное отношение со стороны работодателя и коллектива, защита от унижения.</div></div>
+        <div class="info-row"><div class="row-num">III</div><div class="row-content"><strong>Связь с принципами:</strong> Равенство, запрет дискриминации, свобода труда создают основу для защиты достоинства.</div></div>
+      </div>`,
+            rightContent: `
+      <div class="quote-block">
+        <div class="quote-text">«Достоинство личности охраняется государством. Ничто не может быть основанием для его умаления.»</div>
+        <div class="quote-source">— Статья 21, Конституция РФ</div>
+      </div>`
+        },
+        {
+            title: 'Нормативная база', tag: 'Legal Base', bg: 'bg-s4', layout: 'cards', cols: 2,
+            content: [
+                { icon: ' CONST //', title: 'Конституция РФ', text: 'Ст. 21 — защита достоинства; Ст. 37 — свобода труда и безопасные условия.' },
+                { icon: ' LABOR //', title: 'Трудовой кодекс РФ', text: 'Ст. 2 (принципы), Ст. 3 (запрет дискриминации), Ст. 237 (моральный вред).' },
+                { icon: ' CIVIL //', title: 'Гражданский кодекс РФ', text: 'Ст. 150–152 — защита чести, достоинства и деловой репутации работника.' },
+                { icon: ' COURT //', title: 'Пленум ВС РФ', text: 'Постановление № 10 от 24.02.2005 «О защите чести и достоинства».' }
+            ]
+        },
+        {
+            title: 'Место в системе принципов', tag: 'Principles', bg: 'bg-s5', layout: 'split',
+            leftContent: `
+      <div class="info-list">
+        <div class="info-row"><div class="row-num">01</div><div class="row-content"><strong>Отраслевые принципы (ст. 2 ТК РФ):</strong> Защита достоинства связана с запретом принудительного труда и дискриминации.</div></div>
+        <div class="info-row"><div class="row-num">02</div><div class="row-content"><strong>Межотраслевой характер:</strong> Принцип объединяет нормы конституционного, трудового и гражданского права.</div></div>
+        <div class="info-row"><div class="row-num">03</div><div class="row-content"><strong>Системная связь:</strong> Обеспечивает гуманизацию труда и защиту личности от производственного произвола.</div></div>
+      </div>`,
+            rightContent: `
+      <div class="stat-block">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Отрасли права</div>
+        <div style="font-size:.85vw;color:var(--gray);margin-top:2vh;line-height:1.5">Конституционное, Трудовое и Гражданское право совместно формируют механизм защиты.</div>
+      </div>`
+        },
+        {
+            title: 'Содержание принципа', tag: 'Content', bg: 'bg-s6', layout: 'cards', cols: 3,
+            content: [
+                { icon: ' RESPECT //', title: 'Уважительное отношение', text: 'Обеспечение корректного поведения со стороны руководства и коллег.' },
+                { icon: ' PROTECT //', title: 'Защита от оскорблений', text: 'Недопустимость угроз, клеветы и унижающих действий в адрес работника.' },
+                { icon: ' DISCIPLINE //', title: 'Дисциплинарные меры', text: 'Запрет на унижающие формы взысканий и публичные порицания.' },
+                { icon: ' PRIVACY //', title: 'Частная жизнь', text: 'Защита персональных данных и невмешательство в личную сферу.' },
+                { icon: ' REFUTE //', title: 'Опровержение', text: 'Право требовать опровержения порочащих и недостоверных сведений.' },
+                { icon: ' COMPENS //', title: 'Моральный вред', text: 'Право на компенсацию за причиненные нравственные страдания.' }
+            ]
+        },
+        {
+            title: 'Формы нарушения', tag: 'Violations', bg: 'bg-s7', layout: 'cards', cols: 3,
+            content: [
+                { icon: ' MOBBING //', title: 'Моббинг', text: 'Систематический психологический террор со стороны коллектива ( травля ).' },
+                { icon: ' BOSSING //', title: 'Боссинг', text: 'Давление, оскорбления и самоуправство со стороны прямого руководителя.' },
+                { icon: ' HARASS //', title: 'Харассмент', text: 'Сексуальные домогательства и неприемлемое поведение интимного характера.' },
+                { icon: ' ABUSE //', title: 'Публичное унижение', text: 'Крики, оскорбления и необоснованная критика при других сотрудниках.' },
+                { icon: ' FALSE //', title: 'Клевета', text: 'Распространение порочащих сведений и ложных обвинений.' }
+            ]
+        },
+        {
+            title: 'Способы защиты', tag: 'Defense', bg: 'bg-s8', layout: 'cards', cols: 2,
+            content: [
+                { icon: ' SELF //', title: 'Самозащита и Профсоюз', text: 'Самозащита трудовых прав (ст. 379 ТК РФ) и обращение в профсоюзные органы.' },
+                { icon: ' ADMIN //', title: 'Административные', text: 'Жалобы в Государственную инспекцию труда (ГИТ) и органы прокуратуры.' },
+                { icon: ' COURT //', title: 'Судебные иски', text: 'Иск о защите чести и достоинства (ст. 152 ГК РФ), восстановлении на работе.' },
+                { icon: ' MEDIAT //', title: 'Медиация и КТС', text: 'Обращение к Уполномоченному по правам человека, медиация, Комиссии по трудовым спорам.' }
+            ]
+        },
+        {
+            title: 'Моральный вред', tag: 'Compensation', bg: 'bg-s9', layout: 'split',
+            leftContent: `
+      <div class="info-list">
+        <div class="info-row"><div class="row-num">§1</div><div class="row-content"><strong>Основание (ст. 237 ТК РФ):</strong> Возмещение морального вреда при нарушении трудовых прав.</div></div>
+        <div class="info-row"><div class="row-num">§2</div><div class="row-content"><strong>Определение размера:</strong> Суд учитывает характер страданий, вину работодателя и обстоятельства.</div></div>
+        <div class="info-row"><div class="row-num">§3</div><div class="row-content"><strong>Критерии:</strong> Требования разумности и справедливости; возможна компенсация без имущественного ущерба.</div></div>
+      </div>`,
+            rightContent: `
+      <div class="stat-block">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Без имущественного ущерба</div>
+        <div style="font-size:.85vw;color:var(--gray);margin-top:2vh;line-height:1.5">Моральный вред может быть компенсирован даже если работник не понес прямых финансовых потерь.</div>
+      </div>`
+        },
+        {
+            title: 'Судебная практика', tag: 'Practice', bg: 'bg-s10', layout: 'cards', cols: 2,
+            content: [
+                { icon: ' CASE 01 //', title: 'Увольнение с унижением', text: 'Восстановление на работе, если приказ об увольнении оформлен с унижением чести.' },
+                { icon: ' CASE 02 //', title: 'Служебная переписка', text: 'Иски за оскорбления в корпоративной электронной почте и мессенджерах.' },
+                { icon: ' CASE 03 //', title: 'Незаконные взыскания', text: 'Взыскание компенсации за моральный вред при незаконных дисциплинарных взысканиях.' },
+                { icon: ' EVIDENCE //', title: 'Доказательства', text: 'Ключевую роль играют аудиозаписи, скриншоты переписок и показания свидетелей.' }
+            ]
+        },
+        {
+            title: 'Проблемы реализации', tag: 'Issues', bg: 'bg-s11', layout: 'cards', cols: 2,
+            content: [
+                { icon: ' BURDEN //', title: 'Сложность доказывания', text: 'Психологическое давление (моббинг) трудно подтвердить объективными доказательствами.' },
+                { icon: ' FEAR //', title: 'Страх потери места', text: 'Работники часто мирятся с унижениями из-за страха увольнения и потери дохода.' },
+                { icon: ' GAP //', title: 'Пробелы в ТК РФ', text: 'Отсутствие прямых определений понятий «моббинг» и «харассмент» в кодексе.' },
+                { icon: ' AMOUNT //', title: 'Малые компенсации', text: 'Суды часто присуждают незначительные суммы компенсаций морального вреда.' }
+            ]
+        },
+        {
+            title: 'Пути решения', tag: 'Solutions', bg: 'bg-s12', layout: 'cards', cols: 2,
+            content: [
+                { icon: ' LEGISL //', title: 'Изменение ТК РФ', text: 'Закрепить легальные понятия «моббинг», «харассмент» и ответственность за них.' },
+                { icon: ' LIABILITY //', title: 'Ответственность', text: 'Усилить санкции для работодателей за систематические нарушения достоинства.' },
+                { icon: ' ETHICS //', title: 'Корпоративная этика', text: 'Внедрение антимоббинговых политик внутри организаций и обучение руководителей.' },
+                { icon: ' MEDIAT //', title: 'Развитие медиации', text: 'Широкое применение медиативных процедур для разрешения трудовых конфликтов.' }
+            ]
+        },
+        {
+            title: 'Выводы', tag: 'Summary', bg: 'bg-s13', layout: 'split',
+            leftContent: `
+      <div class="info-list">
+        <div class="info-row"><div class="row-num">✓</div><div class="row-content"><strong>Правовая природа:</strong> Право на защиту достоинства — межотраслевой конституционный и отраслевой принцип.</div></div>
+        <div class="info-row"><div class="row-num">✓</div><div class="row-content"><strong>Защита:</strong> Осуществляется через самозащиту, ГИТ, прокуратуру, профсоюзы и судебные органы.</div></div>
+        <div class="info-row"><div class="row-num">✓</div><div class="row-content"><strong>Инструмент:</strong> Ключевым механизмом остаётся компенсация морального вреда (ст. 237 ТК РФ).</div></div>
+      </div>`,
+            rightContent: `
+      <div class="quote-block">
+        <div class="quote-text">«Развитие законодательства и судебной практики необходимо для реальной защиты достоинства в сфере труда.»</div>
+        <div class="quote-source">— Итог исследования</div>
+      </div>`
+        },
+        {
+            title: 'Список литературы', tag: 'Sources', bg: 'bg-s14', layout: 'list',
+            content: [
+                { text: 'Конституция Российской Федерации.' },
+                { text: 'Трудовой кодекс Российской Федерации.' },
+                { text: 'Гражданский кодекс Российской Федерации.' },
+                { text: 'Постановление Пленума ВС РФ № 10 от 24.02.2005 «О защите чести и достоинства».' },
+                { text: 'Комментарий к ТК РФ (под ред. К.Н. Гусова).' },
+                { text: 'Научные статьи по проблемам моббинга и защиты достоинства.' }
+            ]
+        }
     ];
 
     const deck = document.getElementById('deck');
@@ -366,23 +407,55 @@
             const el = document.createElement('section');
             el.className = 'slide' + (s.type==='title'?' title':' content');
             el.dataset.index = i;
-            if(s.type==='title'){
-                el.innerHTML = `
-        <div class="topic">${s.topic}</div>
+
+            let html = '';
+            if(s.type === 'title'){
+                html = `
+        <div class="bg-pattern"></div>
+        <div class="glow1"></div>
+        <div class="glow2"></div>
+        <div class="title-eyebrow">${s.topic}</div>
         <h1>${s.title}</h1>
         <div class="ribbon"></div>
         <div class="subtitle">${s.subtitle}</div>
-        <div class="pageno">${i+1} / ${slides.length}</div>`;
+        <div class="footer-row">
+          <span>ОмГУ • 2026</span>
+          <span>0${i+1} / ${slides.length}</span>
+        </div>`;
             } else {
-                const lis = s.bullets.map(b=>{
-                    const html = b.replace(/(ст\.\s*[\d,\s]+ТК РФ|ст\.\s*[\d]+(?:ГК РФ|Конституции РФ)?|Конституции РФ|ТК РФ|ГК РФ)/g,'<strong>$1</strong>');
-                    return `<li>${html}</li>`;
-                }).join('');
-                el.innerHTML = `
-        <div class="header"><h2>${s.title}</h2><div class="num">${i+1} / ${slides.length}</div></div>
-        <div class="body"><ul>${lis}</ul></div>
-        <div class="progress" style="width:${((i+1)/slides.length)*100}%"></div>`;
+                let bodyHtml = `<div class="bg-layer ${s.bg}"></div>`;
+                bodyHtml += `<div class="content-header"><div class="slide-num">0${i+1}</div><h2>${s.title}</h2><div class="tag">${s.tag}</div></div>`;
+
+                if(s.layout === 'cards'){
+                    bodyHtml += `<div class="content-body"><div class="card-grid cols-${s.cols}">`;
+                    s.content.forEach((c, idx) => {
+                        bodyHtml += `<div class="card" style="animation-delay:${0.3 + idx*0.1}s">
+            <div class="card-icon">${c.icon}</div>
+            <div class="card-title">${c.title}</div>
+            <div class="card-text">${c.text}</div>
+          </div>`;
+                    });
+                    bodyHtml += `</div></div>`;
+                } else if(s.layout === 'split'){
+                    bodyHtml += `<div class="content-body"><div class="split-layout">
+          <div class="split-left">${s.leftContent}</div>
+          <div class="split-right">${s.rightContent}</div>
+        </div></div>`;
+                } else if(s.layout === 'list'){
+                    bodyHtml += `<div class="content-body"><div class="info-list">`;
+                    s.content.forEach((c, idx) => {
+                        bodyHtml += `<div class="info-row" style="animation-delay:${0.3 + idx*0.1}s">
+            <div class="row-num">${idx+1}</div>
+            <div class="row-content">${c.text}</div>
+          </div>`;
+                    });
+                    bodyHtml += `</div></div>`;
+                }
+
+                bodyHtml += `<div class="progress-bar" style="width:${((i+1)/slides.length)*100}%"></div>`;
+                html = bodyHtml;
             }
+            el.innerHTML = html;
             deck.appendChild(el);
         });
         show(current, true);
@@ -409,9 +482,7 @@
         if(oldEl){
             oldEl.classList.remove('active');
             oldEl.classList.add(next > current ? 'exit-left' : 'exit-right');
-            setTimeout(()=>{
-                oldEl.classList.remove('exit-left','exit-right');
-            },400);
+            setTimeout(()=>{ oldEl.classList.remove('exit-left','exit-right'); }, 400);
         }
 
         setTimeout(()=>{
@@ -419,7 +490,7 @@
             current = next;
             counter.textContent = `${current+1} / ${slides.length}`;
             isAnimating = false;
-        }, next > current ? 150 : 150);
+        }, 150);
     }
 
     document.getElementById('prev').onclick = ()=>show(current-1);
@@ -446,8 +517,7 @@
         touchX=null;
     });
 
-    setTimeout(()=>hint.classList.add('hide'),5000);
-
+    setTimeout(()=>hint.classList.add('hide'), 5000);
     render();
 </script>
 </body>
