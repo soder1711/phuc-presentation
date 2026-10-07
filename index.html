@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обеспечение права работников на защиту своего достоинства</title>
+    <style>
+        :root{
+            --navy:#1f3a5f;
+            --navy-deep:#15263f;
+            --light:#f4f6f8;
+            --gray:#3c3c3c;
+            --accent:#3a6ea5;
+            --accent-soft:#dce7f2;
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;
+            background:#0b1421;
+            color:#1c1c1c;
+            overflow:hidden;
+            height:100vh;
+        }
+        .deck{
+            width:100vw;height:100vh;position:relative;
+            display:flex;align-items:center;justify-content:center;
+        }
+        .slide{
+            width:min(100vw,178vh);
+            aspect-ratio:16/9;
+            background:var(--light);
+            position:relative;
+            box-shadow:0 30px 80px rgba(0,0,0,.5);
+            overflow:hidden;
+            display:none;
+            flex-direction:column;
+        }
+        .slide.active{display:flex}
+
+        /* Title slide */
+        .slide.title{
+            background:linear-gradient(135deg,var(--navy-deep),var(--navy) 60%,#274d7a);
+            color:#fff;justify-content:center;align-items:center;text-align:center;padding:0 6vw;
+        }
+        .slide.title h1{font-size:3vw;line-height:1.3;font-weight:700;max-width:80%}
+        .slide.title .subtitle{margin-top:2.5vh;font-size:1.3vw;color:#dcdcdc;letter-spacing:.05em}
+        .slide.title .ribbon{margin-top:5vh;width:12vw;height:5px;background:rgba(255,255,255,.6);border-radius:3px}
+        .slide.title .topic{position:absolute;top:4vh;left:4vw;font-size:1vw;color:#a9c3e0;letter-spacing:.15em;text-transform:uppercase}
+        .slide.title .pageno{position:absolute;bottom:3vh;right:4vw;font-size:.9vw;color:#8fb0d8}
+
+        /* Content slide */
+        .slide.content{background:#fff}
+        .header{
+            height:8%;background:linear-gradient(90deg,var(--navy),var(--accent));
+            color:#fff;display:flex;align-items:center;padding:0 3vw;
+        }
+        .header h2{font-size:1.8vw;font-weight:700;letter-spacing:.01em}
+        .header .num{
+            margin-left:auto;font-size:1.1vw;color:#cfe0f0;
+            background:rgba(255,255,255,.12);padding:.4vw 1vw;border-radius:20px;
+        }
+        .body{
+            flex:1;padding:4vh 4vw;display:flex;flex-direction:column;justify-content:center;
+            background:
+                    radial-gradient(circle at 95% 8%, var(--accent-soft) 0, transparent 38%),
+                    #fff;
+        }
+        .body ul{list-style:none;display:flex;flex-direction:column;gap:1.6vh}
+        .body li{
+            font-size:1.15vw;line-height:1.5;color:var(--gray);
+            padding-left:2.3vw;position:relative;max-width:92%;
+        }
+        .body li::before{
+            content:"";position:absolute;left:0;top:.55em;
+            width:1vw;height:1vw;border-radius:50%;
+            background:linear-gradient(135deg,var(--navy),var(--accent));
+            box-shadow:0 0 0 4px var(--accent-soft);
+        }
+        .body li strong{color:var(--navy)}
+
+        .progress{
+            position:absolute;bottom:0;left:0;height:5px;background:var(--accent);
+            transition:width .4s ease;
+        }
+
+        /* Controls */
+        .controls{
+            position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+            display:flex;gap:10px;align-items:center;
+            background:rgba(15,26,41,.85);backdrop-filter:blur(10px);
+            padding:10px 18px;border-radius:40px;color:#fff;z-index:50;
+            font-size:14px;box-shadow:0 8px 30px rgba(0,0,0,.4);
+        }
+        .controls button{
+            background:rgba(255,255,255,.1);border:none;color:#fff;
+            width:34px;height:34px;border-radius:50%;cursor:pointer;
+            font-size:15px;transition:.2s;display:flex;align-items:center;justify-content:center;
+        }
+        .controls button:hover{background:var(--accent)}
+        .controls .counter{min-width:60px;text-align:center;letter-spacing:.05em}
+        .controls .fs{width:auto;padding:0 14px;border-radius:18px;font-size:13px}
+
+        .hint{
+            position:fixed;top:16px;right:20px;color:#7a8aa0;font-size:12px;
+            background:rgba(0,0,0,.4);padding:6px 12px;border-radius:20px;z-index:50;
+        }
+
+        @media (max-aspect-ratio:16/9){
+            .slide{width:100vw;height:auto;aspect-ratio:16/9}
+        }
+    </style>
+</head>
+<body>
+
+<div class="hint">← → / Space · F — полноэкранный режим</div>
+
+<div class="deck" id="deck"></div>
+
+<div class="controls">
+    <button id="prev" title="Назад">‹</button>
+    <span class="counter" id="counter">1 / 14</span>
+    <button id="next" title="Вперёд">›</button>
+    <button class="fs" id="fs">⛶ Полный экран</button>
+</div>
+
+<script>
+    const slides = [
+        {type:'title',
+            title:'Обеспечение права работников на защиту своего достоинства в период трудовой деятельности',
+            subtitle:'Трудовое право  •  ФИО, группа, курс',
+            topic:'Трудовое право'},
+        {title:'Актуальность темы', bullets:[
+                'Достоинство личности — конституционная ценность (ст. 21 Конституции РФ)',
+                'Работник — экономически более слабая сторона трудовых отношений',
+                'Моббинг, хамство, унижение — распространённые явления',
+                'ТК РФ прямо закрепляет право на защиту достоинства (ст. 2, 237)',
+                'Тема недостаточно освещена в практике']},
+        {title:'Понятие «достоинство» в праве', bullets:[
+                'Достоинство — самооценка личности, неотчуждаемое нематериальное благо (ст. 150 ГК РФ)',
+                'В трудовом праве — право на уважительное отношение, защиту от унижения',
+                'Соотносится с принципами: равенство, запрет дискриминации, свобода труда']},
+        {title:'Нормативная база', bullets:[
+                'Конституция РФ — ст. 21, ст. 37',
+                'ТК РФ — ст. 2, ст. 3, ст. 192, ст. 237, ст. 379',
+                'ГК РФ — ст. 150–152 (честь, достоинство, деловая репутация)',
+                'Постановление Пленума ВС РФ № 10 от 24.02.2005']},
+        {title:'Место принципа в системе принципов', bullets:[
+                'Принципы трудового права (ст. 2 ТК РФ) — основополагающие начала',
+                'Связан с: запретом принудительного труда, равенством, запретом дискриминации',
+                'Межотраслевой принцип: конституционное + трудовое + гражданское право']},
+        {title:'Содержание принципа', bullets:[
+                'Уважительное отношение со стороны работодателя и коллег',
+                'Защита от оскорблений, клеветы, угроз',
+                'Недопустимость унижающих дисциплинарных мер',
+                'Защита персональных данных и частной жизни',
+                'Право на опровержение недостоверных сведений',
+                'Право на компенсацию морального вреда']},
+        {title:'Формы нарушения достоинства', bullets:[
+                'Моббинг — психологический террор коллектива',
+                'Боссинг — давление со стороны руководителя',
+                'Харассмент — сексуальные домогательства',
+                'Оскорбления, крик, унижение при коллегах',
+                'Необоснованные обвинения, распространение порочащих сведений']},
+        {title:'Способы защиты права', bullets:[
+                'Самозащита (ст. 379 ТК РФ), обращение в профсоюз',
+                'Административные: ГИТ, прокуратура',
+                'Судебные: иск о защите чести и достоинства (ст. 152 ГК РФ)',
+                'Компенсация морального вреда (ст. 237 ТК РФ)',
+                'Уполномоченный по правам человека, медиация, КТС']},
+        {title:'Компенсация морального вреда', bullets:[
+                'Основание — ст. 237 ТК РФ',
+                'Размер определяется судом: характер страданий, вина, обстоятельства',
+                'Требования разумности и справедливости',
+                'Возможна и без имущественного ущерба']},
+        {title:'Судебная практика', bullets:[
+                'Восстановление на работе при унижающем увольнении',
+                'Иски за оскорбления в служебной переписке',
+                'Взыскание морального вреда за незаконные взыскания',
+                'Доказательства: аудио, скриншоты, свидетели, заключения психолога']},
+        {title:'Проблемы реализации', bullets:[
+                'Сложность доказывания психологического давления',
+                'Страх работника потерять место',
+                'Отсутствие в ТК РФ понятий «моббинг», «харассмент»',
+                'Небольшие суммы компенсаций морального вреда',
+                'Латентность нарушений']},
+        {title:'Пути совершенствования', bullets:[
+                'Закрепить в ТК РФ понятия «моббинг», «харассмент»',
+                'Усилить ответственность работодателя',
+                'Развивать медиацию в трудовых спорах',
+                'Обучать руководителей деловой этике',
+                'Внутренние антимоббинговые политики организаций']},
+        {title:'Выводы', bullets:[
+                'Право на защиту достоинства — конституционный и отраслевой принцип',
+                'Закреплено в ст. 2 и 237 ТК РФ',
+                'Защита: самозащита, ГИТ, суд, профсоюз',
+                'Ключевой инструмент — компенсация морального вреда',
+                'Требуется развитие законодательства и практики']},
+        {title:'Список литературы', bullets:[
+                'Конституция РФ; Трудовой кодекс РФ; Гражданский кодекс РФ',
+                'Постановление Пленума ВС РФ № 10 от 24.02.2005',
+                'Комментарий к ТК РФ (под ред. К.Н. Гусова)',
+                'Научные статьи по моббингу, боссингу, защите достоинства']}
+    ];
+
+    const deck = document.getElementById('deck');
+    const counter = document.getElementById('counter');
+    let current = 0;
+
+    function render(){
+        deck.innerHTML = '';
+        slides.forEach((s,i)=>{
+            const el = document.createElement('section');
+            el.className = 'slide' + (s.type==='title'?' title':' content');
+            if(s.type==='title'){
+                el.innerHTML = `
+        <div class="topic">${s.topic}</div>
+        <h1>${s.title}</h1>
+        <div class="ribbon"></div>
+        <div class="subtitle">${s.subtitle}</div>
+        <div class="pageno">${i+1} / ${slides.length}</div>`;
+            } else {
+                const lis = s.bullets.map(b=>{
+                    const html = b.replace(/(ст\.\s*[\d,\s]+ТК РФ|ст\.\s*[\d]+(?:ГК РФ|Конституции РФ)?|Конституции РФ|ТК РФ|ГК РФ)/g,'<strong>$1</strong>');
+                    return `<li>${html}</li>`;
+                }).join('');
+                el.innerHTML = `
+        <div class="header"><h2>${s.title}</h2><div class="num">${i+1} / ${slides.length}</div></div>
+        <div class="body"><ul>${lis}</ul></div>
+        <div class="progress" style="width:${((i+1)/slides.length)*100}%"></div>`;
+            }
+            deck.appendChild(el);
+        });
+        show(current);
+    }
+
+    function show(i){
+        current = (i+slides.length)%slides.length;
+        [...deck.children].forEach((el,idx)=>el.classList.toggle('active',idx===current));
+        counter.textContent = `${current+1} / ${slides.length}`;
+    }
+
+    document.getElementById('prev').onclick = ()=>show(current-1);
+    document.getElementById('next').onclick = ()=>show(current+1);
+    document.getElementById('fs').onclick = ()=>{
+        if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen();
+    };
+
+    document.addEventListener('keydown',e=>{
+        if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){show(current+1);e.preventDefault();}
+        if(e.key==='ArrowLeft'||e.key==='PageUp'){show(current-1);}
+        if(e.key==='Home') show(0);
+        if(e.key==='End') show(slides.length-1);
+        if(e.key==='f'||e.key==='F') document.getElementById('fs').click();
+    });
+
+    // Swipe support
+    let touchX=null;
+    document.addEventListener('touchstart',e=>touchX=e.touches[0].clientX);
+    document.addEventListener('touchend',e=>{
+        if(touchX===null) return;
+        const dx=e.changedTouches[0].clientX-touchX;
+        if(Math.abs(dx)>50) show(current+(dx<0?1:-1));
+        touchX=null;
+    });
+
+    render();
+</script>
+</body>
+</html>
